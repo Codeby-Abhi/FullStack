@@ -5,22 +5,25 @@ import Login from './pages/auth/Login';
 import Income from './pages/dashboard/Income';
 import Home from './pages/dashboard/Home';
 import Expense from './pages/dashboard/Expense';
+import UserProvider from './context/Usercontext';
 
 function App() {
 
   return (
-    <div>
-      <Router>
-        <Routes>
-           <Route path="/" element={<Root />} />
-           <Route path="/login" exact element={<Login />} />
-           <Route path="/signUp" exact element={<Signup />} />
-           <Route path="/dashboard" exact element={<Home />} />
-           <Route path="/income" exact element={<Income />} />
-           <Route path="/expense" exact element={<Expense />} />
-        </Routes>
-      </Router>
-    </div>
+    <UserProvider>
+      <div>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Root />} />
+            <Route path="/login" exact element={<Login />} />
+            <Route path="/signUp" exact element={<Signup />} />
+            <Route path="/dashboard" exact element={<Home />} />
+            <Route path="/income" exact element={<Income />} />
+            <Route path="/expense" exact element={<Expense />} />
+          </Routes>
+        </Router>
+      </div>
+    </UserProvider>
   )
 }
 
@@ -30,8 +33,8 @@ const Root = () => {
   const isAuthenticated = !!localStorage.getItem('token');
 
   return isAuthenticated ? (
-    <Navigate to={'/dashboard'}/>
-  ):(
+    <Navigate to={'/dashboard'} />
+  ) : (
     <Navigate to={'/login'} />
   )
 };
