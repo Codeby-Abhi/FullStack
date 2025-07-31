@@ -1,9 +1,9 @@
-import React, { useContext } from 'react'
+import React, { Children, useContext } from 'react'
 import { UserContext } from '../../context/Usercontext'
 import Navbar from './Navbar';
 import Sidemenu from './Sidemenu';
 
-const DashBoardLayout = ({ Children, activeMenu }) => {
+const DashBoardLayout = ({ children, activeMenu }) => {
     const { user } = useContext(UserContext);
     return (
         <div className=''>
@@ -14,7 +14,7 @@ const DashBoardLayout = ({ Children, activeMenu }) => {
                     <div className='hidden lg:block'>
                         <Sidemenu activeMenu={activeMenu} />
                     </div>
-                    <div className='grow mx-5'>{Children}</div>
+                    <div className='grow mx-5'>{children}</div>
                 </div>
             )}
         </div>
