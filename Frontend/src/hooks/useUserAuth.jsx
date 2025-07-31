@@ -23,6 +23,7 @@ export const useUserAuth = () => {
                 console.error("failed to fatch user", err);
                 if (ismounted) {
                     clearUser();
+                    console.log("User not found, redirecting to login");
                     navigate("/login");
                 }
             }

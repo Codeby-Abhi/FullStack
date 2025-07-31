@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
 
 export const UserContext = createContext();
 
@@ -8,7 +8,7 @@ const UserProvider = ({ children }) => {
     //function to upload userdata
     const updateUser = (userData) => {
         setUser(userData);
-    }; 
+    };
 
     //function to clear user data
     const clearUser = () => {

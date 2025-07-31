@@ -11,10 +11,9 @@ const Home = () => {
   const navigate = useNavigate();
 
   const [dashboardData, setDashboardData] = useState(null);
-  const [Loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   const fetchdeshboardData = async () => {
-    if (Loading) return;
     setLoading(true);
 
     try {
@@ -38,7 +37,9 @@ const Home = () => {
 
   return (
     <DashBoardLayout activeMenu="dashboard">
-      <div className='my-5 mx-auto'>Home</div>
+      <div className='my-5 mx-auto'>
+        Home
+      </div>
     </DashBoardLayout>
   )
 }

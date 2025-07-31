@@ -3,9 +3,9 @@ import { BASE_URL } from './apiPaths';
 
 const axiosInstance = axios.create({
     baseURL: BASE_URL,
-    timeout: 1000,
+    timeout: 5000, // increased to 5 seconds
     headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Accept: "application/json",
     },
 });
@@ -13,8 +13,8 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
     (config) => {
         const accesstoken = localStorage.getItem("token");
-        if (!accesstoken) {
-            config.headers.Authorization = `Barear ${accesstoken}`
+        if (accesstoken) {
+            config.headers.Authorization = `Bearer ${accesstoken}`;
         }
         return config;
     },
@@ -30,14 +30,13 @@ axiosInstance.interceptors.response.use(
     (error) => {
         if(error.response) {
             if(error.response.status === 401) {
-                window.location.href = "/login"
-            }else if (error.response === 500) {
-                console.error("server error try later");
+                window.location.href = "/login";
+            } else if (error.response.status === 500) {
+                console.error("Server error, please try later");
             }
-        }else if(error.code === "ECONNABORTED"){
-            console.error("request timeout try agian");
+        } else if(error.code === "ECONNABORTED") {
+            console.error("Request timeout, please try again");
         }
-
         return Promise.reject(error);
     }
 );
