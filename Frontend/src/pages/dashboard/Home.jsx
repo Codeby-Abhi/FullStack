@@ -14,6 +14,7 @@ import FinanceOverview from '../../components/Dashboard/FinanceOverview';
 import ExpenseTransactions from './ExpenseTransactions';
 import IncomeTransactions from './IncomeTransactions';
 import Last30DaysExpense from './Last30DaysExpense';
+import RecentIncomewithChart from './RecentIncomewithChart';
 
 const Home = () => {
   useUserAuth();
@@ -91,10 +92,15 @@ const Home = () => {
           data={dashboardData?.last30DaysExpense?.transactions || []}
         />
 
-        {/* <IncomeTransactions 
+        <RecentIncomewithChart
+          data={dashboardData?.last60dayIncome?.transaction?.slice(0,4) || []}
+          totalIncome={dashboardData?.totalIncome || 0}
+        />
+
+        <IncomeTransactions 
           transactions={dashboardData?.last60dayIncome?.transaction || []}
           onSeeMore={()=>navigate('/income')}
-        /> */}
+        />
 
       </div>
     </div>
