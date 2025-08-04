@@ -11,6 +11,9 @@ import { IoMdCard } from 'react-icons/io';
 import { addThousendsSeparator } from '../../utils/helper';
 import RecentTransactions from '../../components/Dashboard/RecentTransactions';
 import FinanceOverview from '../../components/Dashboard/FinanceOverview';
+import ExpenseTransactions from './ExpenseTransactions';
+import IncomeTransactions from './IncomeTransactions';
+import Last30DaysExpense from './Last30DaysExpense';
 
 const Home = () => {
   useUserAuth();
@@ -78,6 +81,21 @@ const Home = () => {
           totalIncome={dashboardData?.totalIncome || 0}
           totalExpense={dashboardData?.totalExpense || 0}
         />
+
+        <ExpenseTransactions  
+          transactions={dashboardData?.last30DaysExpense?.transactions || []}
+          onSeeMore={()=>navigate('/expense')}
+        />
+
+        <Last30DaysExpense
+          data={dashboardData?.last30DaysExpense?.transactions || []}
+        />
+
+        {/* <IncomeTransactions 
+          transactions={dashboardData?.last60dayIncome?.transaction || []}
+          onSeeMore={()=>navigate('/income')}
+        /> */}
+
       </div>
     </div>
   </DashBoardLayout>);

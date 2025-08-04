@@ -1,5 +1,5 @@
 export const validateEmail = (email) => {
-    const regex =  /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
 };
 
@@ -18,5 +18,13 @@ export const addThousendsSeparator = (num) => {
     const [integerPart, FractionalPart] = num.toString().split(".");
     const formatedInteger = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-    return FractionalPart? `${formatedInteger}.${FractionalPart}` : formatedInteger;
+    return FractionalPart ? `${formatedInteger}.${FractionalPart}` : formatedInteger;
+}
+
+export const prepareExpenseBarChartData = ( data = [] ) => {
+    const chartData = data.map((item) => ({
+        catagory: item?.catagory,
+        amount: item?.amount,
+    }));
+    return chartData;
 }
