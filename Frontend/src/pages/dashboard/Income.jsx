@@ -9,8 +9,10 @@ import AddIncomeForm from '../../components/Income/AddIncomeForm';
 import toast from 'react-hot-toast';
 import IncomeList from '../../components/Income/IncomeList';
 import DeleteAlert from '../../components/DeleteAlert';
+import { useUserAuth } from '../../hooks/useUserAuth';
 
 const Income = () => {
+  useUserAuth();
 
   const [incomeData, setIncomeData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -79,7 +81,7 @@ const Income = () => {
   const deleteIncome = async (id) => {
     try {
       await axiosInstance.delete(API_PATHS.INCOME.DELETE_INCOME(id));
-      setOpenDeleteAlert({show:false, data:null});
+      setOpenDeleteAlert({ show: false, data: null });
       toast.success("Income Details deleted");
       fetchIncomeDetails();
     } catch (error) {
@@ -87,7 +89,42 @@ const Income = () => {
     }
   };
 
-  const handleDownloadIncome = async (id) => { };
+  const handleDownloadIncome = async (id) => {
+    try {
+      const response = await axiosInstance.get(API_PATHS.INCOME.GET_ALL_INCOME);
+      const incomeData = response.data;
+
+      if (!incomeData || incomeData.length === 0) {
+        toast.error("No income data to download");
+        return;
+      }
+
+      const headers = ["Source", "Amount", "Date"];
+      const csvData = [
+        headers.join(","),
+        ...incomeData.map(income => [
+          income.source,
+          income.amount,
+          new Date(income.date).toLocaleDateString()
+        ].join(","))
+      ].join("\n");
+
+      const blob = new Blob([csvData], { type: "text/csv" });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `income_report_${new Date().toLocaleDateString()}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      toast.success("Income report downloaded successfully!");
+    } catch (error) {
+      console.error("Error downloading income data:", error);
+      toast.error("Failed to download income report");
+    }
+  };
 
   useEffect(() => {
     fetchIncomeDetails();
