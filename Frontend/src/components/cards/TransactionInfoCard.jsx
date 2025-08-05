@@ -2,12 +2,12 @@ import React from 'react';
 import { LuUtensils, LuTrendingUp, LuTrendingDown, LuTrash2 } from 'react-icons/lu';
 
 const TransactionInfoCard = ({
-    title, icon, date, amount, type, hideDeleteBtn
+    title, icon, date, amount, type, hideDeleteBtn, onDelete
 }) => {
 
-    const getAmounstyle = () => 
+    const getAmounstyle = () =>
         type == 'income' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600';
-    
+
 
     return <div className='group relative flex items-center gap-4 mt-2 p-3 rounded-lg hover:bg-gray-100/60'>
         <div className='w-12 h-12 flex items-center justify-center text-xl text-gray-800 bg-gray-100 rounded-full'>
