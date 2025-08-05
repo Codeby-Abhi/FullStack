@@ -6,15 +6,15 @@ import axiosInstance from '../../utils/axiosinstance';
 import { API_PATHS } from '../../utils/apiPaths';
 import Infocard from '../../components/cards/Infocard';
 
-import { LuHandCoins, LuWalletMinimal,  } from 'react-icons/lu';
+import { LuHandCoins, LuWalletMinimal, } from 'react-icons/lu';
 import { IoMdCard } from 'react-icons/io';
 import { addThousendsSeparator } from '../../utils/helper';
 import RecentTransactions from '../../components/Dashboard/RecentTransactions';
 import FinanceOverview from '../../components/Dashboard/FinanceOverview';
-import ExpenseTransactions from './ExpenseTransactions';
-import IncomeTransactions from './IncomeTransactions';
-import Last30DaysExpense from './Last30DaysExpense';
-import RecentIncomewithChart from './RecentIncomewithChart';
+import ExpenseTransactions from '../../components/Dashboard/ExpenseTransactions';
+import IncomeTransactions from '../../components/Dashboard/IncomeTransactions';
+import Last30DaysExpense from '../../components/Dashboard/Last30DaysExpense';
+import RecentIncomewithChart from '../../components/Dashboard/RecentIncomewithChart';
 
 const Home = () => {
   useUserAuth();
@@ -46,65 +46,66 @@ const Home = () => {
   }, [])
 
 
-  return (<DashBoardLayout activeMenu={'dashboard'}>
-    <div className='my-5 mx-auto'>
-      <div className='grid gird-cols-1 md:grid-cols-3 gap-6'>
-        <Infocard 
-          icon={<IoMdCard /> }
-          label="Total Balance"
-          value={addThousendsSeparator(dashboardData?.totalBalance || 0)}
-          color="bg-primary"
-        />
+  return (
+    <DashBoardLayout activeMenu={'dashboard'}>
+      <div className='my-5 mx-auto'>
+        <div className='grid gird-cols-1 md:grid-cols-3 gap-6'>
+          <Infocard
+            icon={<IoMdCard />}
+            label="Total Balance"
+            value={addThousendsSeparator(dashboardData?.totalBalance || 0)}
+            color="bg-primary"
+          />
 
-        <Infocard 
-          icon={<LuWalletMinimal /> }
-          label="Total Income"  
-          value={addThousendsSeparator(dashboardData?.totalIncome || 0)}
-          color="bg-orange-500"
-        />
+          <Infocard
+            icon={<LuWalletMinimal />}
+            label="Total Income"
+            value={addThousendsSeparator(dashboardData?.totalIncome || 0)}
+            color="bg-orange-500"
+          />
 
-        <Infocard 
-          icon={<LuHandCoins /> }
-          label="Total Expense"
-          value={addThousendsSeparator(dashboardData?.totalExpense || 0)}
-          color="bg-red-500"
-        />
+          <Infocard
+            icon={<LuHandCoins />}
+            label="Total Expense"
+            value={addThousendsSeparator(dashboardData?.totalExpense || 0)}
+            color="bg-red-500"
+          />
+        </div>
+
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mt-6'>
+          <RecentTransactions
+            transcations={dashboardData?.recentTransactios}
+            onSeeMore={() => navigate('/expense')}
+          />
+
+          <FinanceOverview
+            totalBalance={dashboardData?.totalBalance || 0}
+            totalIncome={dashboardData?.totalIncome || 0}
+            totalExpense={dashboardData?.totalExpense || 0}
+          />
+
+          <ExpenseTransactions
+            transactions={dashboardData?.last30DaysExpense?.transactions || []}
+            onSeeMore={() => navigate('/expense')}
+          />
+
+          <Last30DaysExpense
+            data={dashboardData?.last30DaysExpense?.transactions || []}
+          />
+
+          <RecentIncomewithChart
+            data={dashboardData?.last60dayIncome?.transaction?.slice(0, 4) || []}
+            totalIncome={dashboardData?.totalIncome || 0}
+          />
+
+          <IncomeTransactions
+            transactions={dashboardData?.last60dayIncome?.transaction || []}
+            onSeeMore={() => navigate('/income')}
+          />
+
+        </div>
       </div>
-    
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mt-6'>
-        <RecentTransactions
-          transcations={dashboardData?.recentTransactios}
-          onSeeMore={() => navigate('/expense')}
-        />
-
-        <FinanceOverview 
-          totalBalance={dashboardData?.totalBalance || 0}
-          totalIncome={dashboardData?.totalIncome || 0}
-          totalExpense={dashboardData?.totalExpense || 0}
-        />
-
-        <ExpenseTransactions  
-          transactions={dashboardData?.last30DaysExpense?.transactions || []}
-          onSeeMore={()=>navigate('/expense')}
-        />
-
-        <Last30DaysExpense
-          data={dashboardData?.last30DaysExpense?.transactions || []}
-        />
-
-        <RecentIncomewithChart
-          data={dashboardData?.last60dayIncome?.transaction?.slice(0,4) || []}
-          totalIncome={dashboardData?.totalIncome || 0}
-        />
-
-        <IncomeTransactions 
-          transactions={dashboardData?.last60dayIncome?.transaction || []}
-          onSeeMore={()=>navigate('/income')}
-        />
-
-      </div>
-    </div>
-  </DashBoardLayout>);
+    </DashBoardLayout>);
 };
 
 export default Home;
