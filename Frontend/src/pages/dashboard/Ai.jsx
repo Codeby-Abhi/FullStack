@@ -14,7 +14,7 @@ const Ai = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const genAI = new GoogleGenerativeAI("AIzaSyAhjlevH0_Icgi9XSc0dgjaT2ZMToF1-oI");
+    const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
 
     const fetchDashboardData = async () => {
         try {
@@ -32,17 +32,21 @@ const Ai = () => {
     const generateAiAdvice = async (data) => {
         try {
             setLoading(true);
-            const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+            const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
 
-            const prompt = `
-                You are a finance Expert show my 
-                Total Income: $${data.totalIncome}
-                Total Expenses: $${data.totalExpense}
-                Current Balance: $${data.totalBalance} 
-                based this given json data give me tips for saving more if its not an ideal spending
-                suggest me to collect emergancy fund and how much to collect if its i dont have than suggest me where can i invest money which i haveing right now 
-                make sure to keep it shorter and well structured thus it can be easy to read keep the text plain don't make anthing bold or highlight
-            `;
+            const prompt = `You are a financial advisor. Based on the following financial summary (All summery is in USD), provide concise and easy-to-read advice.
+                            Do not use any markdown like bolding or highlights. Keep the text plain.
+
+                           Financial Summary:
+                           - Total Income: $${data.totalIncome}
+                           - Total Expenses: $${data.totalExpense}
+                           - Current Balance: $${data.totalBalance}
+
+                           Please provide:
+                           1. Tips for saving more money if current spending is not ideal also point where should cutoff the spending.
+                           2. Recommendations for an emergency fund (if one is needed) and how much to save (atleast of $3,600 to $6,500).
+                           3. Suggestions on where to invest the current balance.
+                         `;
 
             const result = await model.generateContent(prompt);
             const response = await result.response;
@@ -52,6 +56,7 @@ const Ai = () => {
             console.error(err);
         } finally {
             setLoading(false);
+            setError(null)
         }
     };
 
@@ -96,10 +101,8 @@ const Ai = () => {
                 {aiResponse && (
                     <div className="bg-white rounded-lg shadow-sm p-6">
                         <h3 className="text-lg font-semibold mb-4">Financial Analysis & Recommendations</h3>
-                        <div className="prose max-w-none">
-                            {aiResponse.split('\n').map((line, index) => (
-                                <p key={index} className="mb-2">{line}</p>
-                            ))}
+                        <div className="prose max-w-none text-gray-700">
+                            <p className="whitespace-pre-wrap">{aiResponse}</p>
                         </div>
                     </div>
                 )}
