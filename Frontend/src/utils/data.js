@@ -3,6 +3,7 @@ import {
     LuHandCoins,
     LuWalletMinimal,
     LuLogOut,
+    LuBot,
 } from "react-icons/lu";
 
 export const SIDE_MENU_DATA = [
@@ -26,9 +27,16 @@ export const SIDE_MENU_DATA = [
     },
     {
         id:"06",
+        label:"ai-advisor",
+        icon:LuBot,
+        path:"/Ai",
+    },
+    {
+        id:"06",
         label:"Logout",
         icon:LuLogOut,
         path:"/logout",
-    }
+    },
+    
 ];
 

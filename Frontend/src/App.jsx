@@ -7,6 +7,7 @@ import Home from './pages/dashboard/Home';
 import Expense from './pages/dashboard/Expense';
 import UserProvider from './context/Usercontext';
 import { Toaster } from 'react-hot-toast';
+import Ai from './pages/dashboard/Ai';
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
             <Route path="/dashboard" exact element={<Home />} />
             <Route path="/income" exact element={<Income />} />
             <Route path="/expense" exact element={<Expense />} />
+            <Route path="/Ai" exact element={<Ai />} />
           </Routes>
         </Router>
       </div>
